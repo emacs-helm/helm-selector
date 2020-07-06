@@ -66,7 +66,11 @@ of the MODES."
       (seq-find #'derived-mode-p modes))))
 
 (defun helm-selector--dummy-source (&optional mode make-buffer-fn)
-  "See `helm-source-buffer-not-found'."
+  "Helm source to create a new buffer.
+MAKE-BUFFER-FN takes the Helm input as argument for the new buffer name and
+returns the new buffer.
+If MAKE-BUFFER-FN is omitted create buffer in MODE (query the user if nil).
+See `helm-source-buffer-not-found'."
   (helm-build-dummy-source
       "Create buffer"
     :action
@@ -80,9 +84,9 @@ of the MODES."
                                                "Major-mode: "
                                                helm-buffers-favorite-modes)))
                             mode
-                            (cl-loop for (r . m) in auto-mode-alist
-                                     when (string-match r candidate)
-                                     return m)))
+                            (cl-loop for (regex . mode) in auto-mode-alist
+                                     when (string-match regex candidate)
+                                     return mode)))
                        (buffer (get-buffer-create candidate)))
                    (if new-buffer-mode
                        (with-current-buffer buffer (funcall new-buffer-mode))
