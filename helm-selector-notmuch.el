@@ -31,7 +31,8 @@
 (require 'helm-selector)
 (require 'notmuch nil :noerror)
 
-(declare-function notmuch "notmuch")
+(declare-function notmuch-interesting-buffer "notmuch")
+(declare-function notmuch-hello "notmuch-hello")
 
 ;;;###autoload
 (defun helm-selector-notmuch ()
