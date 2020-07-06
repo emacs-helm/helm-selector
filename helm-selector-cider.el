@@ -31,7 +31,7 @@
 (require 'helm-selector)
 (require 'cider nil :noerror)
 
-(declare-function cider-jack-in "cider")
+(declare-function cider "cider")
 
 ;;;###autoload
 (defun helm-selector-cider ()
