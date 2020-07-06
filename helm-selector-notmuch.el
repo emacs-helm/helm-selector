@@ -29,7 +29,9 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'notmuch)
+(require 'notmuch nil :noerror)
+
+(declare-function notmuch "notmuch")
 
 ;;;###autoload
 (defun helm-selector-notmuch ()

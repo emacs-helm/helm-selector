@@ -29,8 +29,10 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'geiser-impl)
-(require 'geiser-repl)
+(require 'geiser-impl nil :noerror)
+(require 'geiser-repl nil :noerror)
+
+(declare-function geiser-repl--repl-name "geiser-repl")
 
 ;;;###autoload
 (defun helm-selector-geiser ()

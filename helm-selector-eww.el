@@ -30,7 +30,10 @@
 
 (require 'helm-selector)
 (require 'eww)
-(require 'helm-eww)
+(require 'thingatpt)
+(require 'helm-eww nil t)
+
+(declare-function helm-eww "helm-eww")
 
 ;;;###autoload
 (defun helm-selector-eww ()

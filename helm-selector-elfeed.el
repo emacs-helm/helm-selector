@@ -29,7 +29,9 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'elfeed)
+(require 'elfeed nil :noerror)
+
+(declare-function elfeed "elfeed")
 
 ;;;###autoload
 (defun helm-selector-elfeed ()

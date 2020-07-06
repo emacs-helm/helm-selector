@@ -29,7 +29,9 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'mu4e)
+(require 'mu4e nil :noerror)
+
+(declare-function mu4e "mu4e")
 
 ;;;###autoload
 (defun helm-selector-mu4e ()
