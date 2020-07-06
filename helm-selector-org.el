@@ -42,23 +42,28 @@
                   (member (file-truename (buffer-file-name buffer))
                           (mapcar #'file-truename org-agenda-files))))
    :make-buffer-fn (lambda (&optional name)
-                     (let* ((org-ext?
-                             (lambda (name)
-                               (and (file-name-extension name)
-                                    (seq-find
-                                     (lambda (ext)
-                                       (string= (downcase (file-name-extension name))
-                                                ext))
-                                     '("org" "gpg")))))
-                            (file-name
-                             (expand-file-name
-                              (if (funcall org-ext? name)
-                                  name
-                                (concat name ".org"))
-                              (file-name-directory (or (car org-agenda-files)
-                                                       (buffer-file-name))))))
-                       (add-to-list 'org-agenda-files file-name)
-                       (find-file file-name)))
+                     (if (not name)
+                         ;; No .org buffer opened yet, let's open the first agenda:
+                         (find-file (car (org-agenda-files)))
+                       (let* ((org-ext?
+                               (lambda (name)
+                                 (and name
+                                      (file-name-extension name)
+                                      (seq-find
+                                       (lambda (ext)
+                                         (string= (downcase (file-name-extension name))
+                                                  ext))
+                                       ;; Org files have a .gpg extension when GPG-encrypted.
+                                       '("org" "gpg")))))
+                              (file-name
+                               (expand-file-name
+                                (if (funcall org-ext? name)
+                                    name
+                                  (concat name ".org"))
+                                (file-name-directory (or (car org-agenda-files)
+                                                         (buffer-file-name))))))
+                         (add-to-list 'org-agenda-files file-name)
+                         (find-file file-name))))
    :extra-sources (helm-make-source "Org agenda files" 'helm-source-ffiles
                     :candidates (lambda () org-agenda-files))
    :use-follow-p t))
