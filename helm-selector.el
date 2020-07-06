@@ -121,13 +121,20 @@ of the MODES."
                          extra-sources
                          use-follow-p)
   "Create an interactive buffer switcher NAME.
-When current buffer does not satisfy PREDICATE, switch to the last-buffer buffer that does.
+When current buffer does not satisfy PREDICATE, switch to the last-buffer buffer
+that does.
 When current buffer does satisfy it, show a Helm buffer:
 
 - HELM-SOURCES if non-nil.
 - A default Helm lister of all buffers that satisfy PREDICATE otherwise.
 
-MAKE-BUFFER-FN is required for the default Helm lister.
+In the Helm session, it's also possible to input an arbitrary
+name which will be passed as first argument to MAKE-BUFFER-FN for
+the creation of a new buffer of mode X.
+
+When there is no buffer in mode X, MAKE-BUFFER-FN is invoked
+without argument to create a buffer.
+
 When provided, EXTRA-SOURCES are appended to the default Helm lister.
 USE-FOLLOW-P enables follow-mode for the default Helm lister."
   (let ((other-window-p current-prefix-arg)
