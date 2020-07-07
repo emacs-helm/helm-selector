@@ -48,6 +48,9 @@
 ;; (global-set-key (kbd "C-h i") 'helm-selector-info)
 ;; (global-set-key (kbd "s-RET") 'helm-selector-shell)
 ;; (global-set-key (kbd "s-S-RET") 'helm-selector-shell-other-window)
+;;
+;; Calling `helm-selector-shell' with a prefix argument is equivalent to
+;; `helm-selector-shell-other-window'.
 
 ;;; Code:
 

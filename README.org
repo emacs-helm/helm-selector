@@ -23,6 +23,30 @@ selector:
 (global-set-key (kbd "s-S-RET") 'helm-selector-shell-other-window)
 #+end_src
 
+Calling =helm-selector-shell= with a prefix argument is equivalent to
+=helm-selector-shell-other-window=.
+
+Creating a new selector is simple, it all happens in the =helm-selector= helper:
+
+#+begin_src elisp
+(defun helm-selector-info ()
+  "Helm for `info' buffers."
+  (interactive)
+  (helm-selector
+   "Info"
+   :predicate (helm-selector-major-modes-predicate 'Info-mode)
+   :make-buffer-fn (lambda (&optional name)
+                     (info nil (when name (format "*info*<%s>" name))))
+   :use-follow-p t))
+
+(defun helm-selector-info-other-window ()
+  "Like `helm-selector-info' but raise buffer in other window."
+  (interactive)
+  (let ((current-prefix-arg t))
+    (call-interactively #'helm-selector-info)))
+#+end_src
+
+
 * References
 
 [[https://github.com/jamesnvc/helm-switch-shell][helm-switch-shell]] is a similar project with a narrower scope.  It should be
