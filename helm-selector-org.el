@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'helm-selector)
+(require 'subr-x)
 (require 'org)
 
 ;;;###autoload
@@ -47,14 +48,9 @@
                          (find-file (car (org-agenda-files)))
                        (let* ((org-ext?
                                (lambda (name)
-                                 (and name
-                                      (file-name-extension name)
-                                      (seq-find
-                                       (lambda (ext)
-                                         (string= (downcase (file-name-extension name))
-                                                  ext))
-                                       ;; Org files have a .gpg extension when GPG-encrypted.
-                                       '("org" "gpg")))))
+                                 (and-let* ((name name)
+                                            (ext (file-name-extension name)))
+                                   (member (downcase ext) '("org" "gpg")))))
                               (file-name
                                (expand-file-name
                                 (if (funcall org-ext? name)

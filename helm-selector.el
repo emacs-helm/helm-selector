@@ -59,7 +59,6 @@
 (require 'helm-mode)
 (require 'helm-buffers)
 (require 'cl-lib)
-(require 'seq)
 
 (defun helm-selector-major-modes-predicate (&rest modes)
   "Return a predicate.
@@ -67,7 +66,7 @@ The predicate returns non-nil if current buffer derives from one
 of the MODES."
   (lambda (buffer)
     (with-current-buffer buffer
-      (seq-find #'derived-mode-p modes))))
+      (cl-find-if #'derived-mode-p modes))))
 
 (defun helm-selector--dummy-source (&optional mode make-buffer-fn)
   "Helm source to create a new buffer.
@@ -110,7 +109,7 @@ See `helm-source-buffer-not-found'."
    :sources (list (helm-make-source (format "%s buffers" name) 'helm-source-buffers
                     :buffer-list (lambda ()
                                    (mapcar #'buffer-name
-                                           (seq-filter predicate (buffer-list)))))
+                                           (cl-remove-if-not predicate (buffer-list)))))
                   (let ((mode (intern (format "%s-mode" (downcase name)))))
                     (unless (fboundp mode)
                       ;; For cased mode names like `Info-mode'.
@@ -155,7 +154,7 @@ USE-FOLLOW-P enables follow-mode for the default Helm lister."
                                             :predicate predicate
                                             :make-buffer-fn make-buffer-fn
                                             :extra-sources extra-sources))
-      (let ((last-buffer (seq-find predicate (buffer-list))))
+      (let ((last-buffer (cl-find-if predicate (buffer-list))))
         (cond
          ((and last-buffer (get-buffer-window last-buffer))
           (select-window (get-buffer-window last-buffer)))
