@@ -26,6 +26,10 @@
 ;; along with this program.  If not, see
 ;; <https://www.gnu.org/licenses/>
 
+;;; Commentary:
+;;
+;; Support file for helm-selector.
+
 ;;; Code:
 
 (require 'helm-selector)
