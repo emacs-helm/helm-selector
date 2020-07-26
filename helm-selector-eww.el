@@ -46,7 +46,7 @@
                      (interactive)
                      (if (thing-at-point-url-at-point)
                          ;; This only works fine if no EWW buffer is up.
-                         (call-interactively 'eww)
+                         (call-interactively #'eww)
                        (helm-eww)))
    :helm-lister #'helm-eww
    :use-follow-p t))
