@@ -6,7 +6,7 @@
 ;; Maintainer: Pierre Neidhardt <mail@ambrevar.xyz>
 ;; URL: https://github.com/emacs-helm/helm-selector
 ;; Version: 0.1
-;; Package-Requires: ((emacs "25") (helm "3"))
+;; Package-Requires: ((emacs "26.1") (helm "3"))
 
 ;; This file is not part of GNU Emacs.
 
