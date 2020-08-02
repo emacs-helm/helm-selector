@@ -36,6 +36,7 @@
 (require 'mu4e nil :noerror)
 
 (declare-function mu4e "mu4e")
+(declare-function mu4e-conversation--buffer-p  "mu4e-conversation")
 
 ;;;###autoload
 (defun helm-selector-mu4e ()
@@ -51,8 +52,7 @@
                    (derived-mode-p 'mu4e-view-mode)
                    (derived-mode-p 'mu4e-compose-mode)
                    (when (require 'mu4e-conversation nil 'noerror)
-                     ;; We use `apply' to avoid the warning about the undefined function.
-                     (apply 'mu4e-conversation--buffer-p (list buffer))))))
+                     (mu4e-conversation--buffer-p (list buffer))))))
    :make-buffer-fn #'mu4e
    :use-follow-p t))
 
