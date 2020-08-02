@@ -46,14 +46,11 @@
    "Geiser-REPL"
    :predicate (helm-selector-major-modes-predicate 'geiser-repl-mode)
    :make-buffer-fn (lambda (&optional name)
-                     (defun helm-selector-geiser--repl-buffer-name (impl)
-                       (format "* %s%s *" (geiser-repl--repl-name impl)
-                               (if name (concat "-" name) "")))
-                     (advice-add 'geiser-repl-buffer-name
-                                 :override 'helm-selector-geiser--repl-buffer-name)
-                     (call-interactively 'run-geiser)
-                     (advice-remove 'geiser-repl-buffer-name
-                                    'helm-selector-geiser--repl-buffer-name))
+                     (cl-letf ((geiser-repl-buffer-name
+                                (lambda (impl)
+                                  (format "* %s%s *" (geiser-repl--repl-name impl)
+                                          (if name (concat "-" name) "")))))
+                       (call-interactively 'run-geiser)))
    :use-follow-p t))
 
 ;;;###autoload
