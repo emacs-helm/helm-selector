@@ -52,7 +52,7 @@
                          ;; This only works fine if no EWW buffer is up.
                          (call-interactively #'eww)
                        (helm-eww)))
-   :helm-lister #'helm-eww
+   :helm-sources #'helm-eww
    :use-follow-p t))
 
 ;;;###autoload
