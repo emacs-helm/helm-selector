@@ -46,10 +46,10 @@
    "Geiser-REPL"
    :predicate (helm-selector-major-modes-predicate 'geiser-repl-mode)
    :make-buffer-fn (lambda (&optional name)
-                     (cl-letf ((geiser-repl-buffer-name
-                                (lambda (impl)
-                                  (format "* %s%s *" (geiser-repl--repl-name impl)
-                                          (if name (concat "-" name) "")))))
+                     (let ((geiser-repl-buffer-name-function
+                            (lambda (impl)
+                              (format "* %s%s *" (geiser-repl--repl-name impl)
+                                      (if name (concat "-" name) "")))))
                        (call-interactively 'run-geiser)))
    :use-follow-p t))
 
