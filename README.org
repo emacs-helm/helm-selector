@@ -1,5 +1,7 @@
 #+TITLE: Helm Selector
 
+[[https://travis-ci.com/emacs-helm/helm-selector][https://travis-ci.com/emacs-helm/helm-selector.svg?branch=master]]
+
 Helm Selector is a collection of [[Https://emacs-helm.github.io/helm/][Helm]] helper functions for convenient buffer
 selection.
 
