@@ -32,8 +32,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'subr-x))
+
 (require 'helm-selector)
-(require 'subr-x)
 (require 'org)
 
 (defvar org-agenda-files)
