@@ -33,15 +33,15 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'mu4e nil :noerror)
 
-(declare-function mu4e "mu4e")
-(declare-function mu4e-conversation--buffer-p  "mu4e-conversation")
+(declare-function mu4e "ext:mu4e")
+(declare-function mu4e-conversation--buffer-p  "ext:mu4e-conversation")
 
 ;;;###autoload
 (defun helm-selector-mu4e ()
   "Helm for `mu4e' buffers."
   (interactive)
+  (require 'mu4e)
   (helm-selector
    "mu4e"
    :predicate (lambda (buffer)

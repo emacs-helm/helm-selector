@@ -36,6 +36,8 @@
 (require 'subr-x)
 (require 'org)
 
+(defvar org-agenda-files)
+
 ;;;###autoload
 (defun helm-selector-org ()
   "Helm for `org' buffers."

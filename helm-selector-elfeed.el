@@ -33,14 +33,14 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'elfeed nil :noerror)
 
-(declare-function elfeed "elfeed")
+(declare-function elfeed "ext:elfeed")
 
 ;;;###autoload
 (defun helm-selector-elfeed ()
   "Helm for `elfeed' buffers."
   (interactive)
+  (require 'elfeed)
   (helm-selector
    "elfeed"
    :predicate (helm-selector-major-modes-predicate 'elfeed-search-mode 'elfeed-show-mode)

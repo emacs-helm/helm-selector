@@ -33,17 +33,17 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'slime nil :noerror)
-(require 'helm-slime nil :noerror)
 
-(declare-function slime "slime")
-(declare-function slime-output-buffer "slime")
-(declare-function helm-slime-mini "helm-slime")
+(declare-function slime "ext:slime")
+(declare-function slime-output-buffer "ext:slime")
+(declare-function helm-slime-mini "ext:helm-slime")
 
 ;;;###autoload
 (defun helm-selector-slime ()
   "Helm for `slime' buffers."
   (interactive)
+  (require 'slime)
+  (require 'helm-slime)
   (helm-selector
    "SLIME-REPL"
    :predicate (lambda (buffer)

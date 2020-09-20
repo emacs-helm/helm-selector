@@ -35,14 +35,14 @@
 (require 'helm-selector)
 (require 'eww)
 (require 'thingatpt)
-(require 'helm-eww nil t)
 
-(declare-function helm-eww "helm-eww")
+(declare-function helm-eww "ext:helm-eww")
 
 ;;;###autoload
 (defun helm-selector-eww ()
   "Helm for `eww' buffers."
   (interactive)
+  (require 'helm-eww)
   (helm-selector
    "eww"
    :predicate (helm-selector-major-modes-predicate 'eww-mode)

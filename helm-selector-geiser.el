@@ -33,15 +33,18 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'geiser-impl nil :noerror)
-(require 'geiser-repl nil :noerror)
 
-(declare-function geiser-repl--repl-name "geiser-repl")
+(declare-function geiser-repl--repl-name "ext:geiser-repl")
+(declare-function run-geiser "ext:geiser-repl")
+
+(defvar geiser-repl-buffer-name-function)
 
 ;;;###autoload
 (defun helm-selector-geiser ()
   "Helm for `geiser' buffers."
   (interactive)
+  (require 'geiser-impl)
+  (require 'geiser-repl)
   (helm-selector
    "Geiser-REPL"
    :predicate (helm-selector-major-modes-predicate 'geiser-repl-mode)

@@ -33,18 +33,18 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'sly nil :noerror)
-(require 'helm-sly nil :noerror)
 
-(declare-function sly "sly")
-(declare-function sly-current-connection "sly")
-(declare-function sly-mrepl--find-buffer "sly-mrepl")
-(declare-function helm-sly-mini "helm-sly")
+(declare-function sly "ext:sly")
+(declare-function sly-current-connection "ext:sly")
+(declare-function sly-mrepl--find-buffer "ext:sly-mrepl")
+(declare-function helm-sly-mini "ext:helm-sly")
 
 ;;;###autoload
 (defun helm-selector-sly ()
   "Helm for `sly' buffers."
   (interactive)
+  (require 'sly)
+  (require 'helm-sly)
   (helm-selector
    "SLY-REPL"
    :predicate (lambda (buffer)

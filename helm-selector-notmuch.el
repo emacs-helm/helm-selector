@@ -33,15 +33,15 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'notmuch nil :noerror)
 
-(declare-function notmuch-interesting-buffer "notmuch")
-(declare-function notmuch-hello "notmuch-hello")
+(declare-function notmuch-interesting-buffer "ext:notmuch")
+(declare-function notmuch-hello "ext:notmuch-hello")
 
 ;;;###autoload
 (defun helm-selector-notmuch ()
   "Helm for `notmuch' buffers."
   (interactive)
+  (require 'notmuch)
   (helm-selector
    "notmuch"
    :predicate #'notmuch-interesting-buffer

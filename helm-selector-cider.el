@@ -33,14 +33,14 @@
 ;;; Code:
 
 (require 'helm-selector)
-(require 'cider nil :noerror)
 
-(declare-function cider "cider")
+(declare-function cider "ext:cider")
 
 ;;;###autoload
 (defun helm-selector-cider ()
   "Helm for `cider' buffers."
   (interactive)
+  (require 'cider)
   (helm-selector
    "CIDER-REPL"
    :predicate (helm-selector-major-modes-predicate 'cider-repl-mode)
