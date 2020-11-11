@@ -1,3 +1,6 @@
+[[https://melpa.org/#/helm-selector][file:https://melpa.org/packages/helm-selector-badge.svg]]
+[[https://stable.melpa.org/#/helm-selector][file:https://stable.melpa.org/packages/helm-selector-badge.svg]]
+
 #+TITLE: Helm Selector
 
 Helm Selector is a collection of [[Https://emacs-helm.github.io/helm/][Helm]] helper functions for convenient buffer
