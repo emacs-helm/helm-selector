@@ -149,11 +149,12 @@ USE-FOLLOW-P enables follow-mode for the default Helm lister."
     (when use-follow-p
       (add-to-list 'helm-source-names-using-follow buffer-source-name))
     (if (funcall predicate (current-buffer))
-        (or (and helm-sources (funcall helm-sources))
-            (helm-selector--default-sources name
-                                            :predicate predicate
-                                            :make-buffer-fn make-buffer-fn
-                                            :extra-sources extra-sources))
+        (if helm-sources
+            (funcall helm-sources)
+          (helm-selector--default-sources name
+                                          :predicate predicate
+                                          :make-buffer-fn make-buffer-fn
+                                          :extra-sources extra-sources))
       (let ((last-buffer (cl-find-if predicate (buffer-list))))
         (cond
          ((and last-buffer (get-buffer-window last-buffer))
