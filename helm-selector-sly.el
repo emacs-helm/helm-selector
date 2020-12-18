@@ -50,7 +50,12 @@
    :predicate (lambda (buffer)
                 (eq buffer (ignore-errors
                              (sly-mrepl--find-buffer (sly-current-connection)))))
-   :make-buffer-fn #'sly
+   :make-buffer-fn (lambda ()
+                     (interactive)
+                     (if (< 1 (length sly-lisp-implementations))
+                         (let ((current-prefix-arg '-))
+                           (call-interactively #'sly))
+                       (sly)))
    :helm-sources #'helm-sly-mini))
 
 ;;;###autoload
