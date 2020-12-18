@@ -37,6 +37,7 @@
 (require 'geiser-repl nil :noerror)
 
 (declare-function geiser-repl--repl-name "geiser-repl")
+(defvar geiser-repl-buffer-name-function)
 
 ;;;###autoload
 (defun helm-selector-geiser ()

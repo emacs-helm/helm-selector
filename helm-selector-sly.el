@@ -40,6 +40,7 @@
 (declare-function sly-current-connection "sly")
 (declare-function sly-mrepl--find-buffer "sly-mrepl")
 (declare-function helm-sly-mini "helm-sly")
+(defvar sly-lisp-implementations)
 
 ;;;###autoload
 (defun helm-selector-sly ()
