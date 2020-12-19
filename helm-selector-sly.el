@@ -37,10 +37,10 @@
 (require 'helm-sly nil :noerror)
 
 (declare-function sly "sly")
-(declare-function sly-current-connection "sly")
-(declare-function sly-mrepl--find-buffer "sly-mrepl")
+(declare-function sly-process "sly")
 (declare-function helm-sly-mini "helm-sly")
 (defvar sly-lisp-implementations)
+(defvar sly-buffer-connection)
 
 ;;;###autoload
 (defun helm-selector-sly ()
