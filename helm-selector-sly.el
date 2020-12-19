@@ -50,7 +50,12 @@
    "SLY-REPL"
    :predicate (lambda (buffer)
                 (eq buffer (ignore-errors
-                             (sly-mrepl--find-buffer (sly-current-connection)))))
+                             ;; Check if buffer process is still alive to avoid
+                             ;; returned closed connections.
+                             (with-current-buffer buffer
+                               (when (and sly-buffer-connection
+                                          (sly-process sly-buffer-connection))
+                                 buffer)))))
    :make-buffer-fn (lambda ()
                      (interactive)
                      (if (< 1 (length sly-lisp-implementations))
