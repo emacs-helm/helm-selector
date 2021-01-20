@@ -49,13 +49,13 @@
   (helm-selector
    "SLY-REPL"
    :predicate (lambda (buffer)
-                (eq buffer (ignore-errors
-                             ;; Check if buffer process is still alive to avoid
-                             ;; returned closed connections.
-                             (with-current-buffer buffer
-                               (when (and sly-buffer-connection
-                                          (sly-process sly-buffer-connection))
-                                 buffer)))))
+                (ignore-errors
+                  ;; Check if buffer process is still alive to avoid
+                  ;; returned closed connections.
+                  (with-current-buffer buffer
+                    (and (derived-mode-p 'sly-mrepl-mode)
+                         sly-buffer-connection
+                         (sly-process sly-buffer-connection)))))
    :make-buffer-fn (lambda ()
                      (interactive)
                      (if (< 1 (length sly-lisp-implementations))
