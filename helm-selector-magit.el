@@ -51,6 +51,17 @@
                              (buffer-list)))
    :test #'string=))
 
+(defun helm-selector-magit--buffer-repo-list-sorted ()
+  "Like `helm-selector-magit--buffer-repo-list' but current
+repository is listed last."
+  (let ((repo (file-truename (magit-repository-local-repository))))
+    (if repo
+        (cons repo
+              (delete repo
+                      (mapcar #'file-truename
+                              (helm-selector-magit--buffer-repo-list))))
+      (helm-selector-magit--buffer-repo-list))))
+
 (defun helm-selector-magit--buffer-p (directory buffer)
   (let* ((directory (or directory magit--default-directory))
          (directory (when directory (file-truename directory))))
@@ -62,6 +73,11 @@
                 (string= directory
                          (file-truename magit--default-directory))))))))
 
+(defun helm-selector-magit--make-repo-source (repo)
+  (helm-selector--default-source
+   (file-name-base (directory-file-name repo))
+   :predicate (apply-partially #'helm-selector-magit--buffer-p repo)))
+
 ;;;###autoload
 (defun helm-selector-magit ()
   "Helm for `magit' buffers of the current repository."
@@ -70,26 +86,18 @@
    "Magit"
    :predicate (apply-partially #'helm-selector-magit--buffer-p
                                (magit-repository-local-repository))
-   :helm-sources (lambda ()
-                   (helm
-                    :sources (append
-                              (mapcar (lambda (repo)
-                                        (helm-selector--default-source
-                                         (file-name-base (directory-file-name repo))
-                                         :predicate (apply-partially #'helm-selector-magit--buffer-p repo)))
-                                      (let ((repo (file-truename (magit-repository-local-repository))))
-                                        (if repo
-                                            (cons repo
-                                                  (delete repo
-                                                          (mapcar #'file-truename
-                                                                  (helm-selector-magit--buffer-repo-list))))
-                                          (helm-selector-magit--buffer-repo-list))))
-                              (list (helm-build-sync-source "Magit repositories"
-                                      :candidates (magit-repos-alist)
-                                      :action (helm-make-actions
-                                               "Repository status"
-                                               #'magit-status-setup-buffer))))
-                    :buffer "Magit buffers"))
+   :helm-sources
+   (lambda ()
+     (helm
+      :sources (append
+                (mapcar #'helm-selector-magit--make-repo-source
+                        (helm-selector-magit--buffer-repo-list-sorted))
+                (list (helm-build-sync-source "Magit repositories"
+                        :candidates (magit-repos-alist)
+                        :action (helm-make-actions
+                                 "Repository status"
+                                 #'magit-status-setup-buffer))))
+      :buffer "Magit buffers"))
    :make-buffer-fn (lambda ()
                      (if (magit-repository-local-repository)
                          (magit-status-setup-buffer)
