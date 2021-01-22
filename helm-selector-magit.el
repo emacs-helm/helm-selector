@@ -51,7 +51,7 @@
                              (buffer-list)))
    :test #'string=))
 
-(defun helm-selector-magit--buffer-p (buffer &optional directory)
+(defun helm-selector-magit--buffer-p (directory buffer)
   (let* ((directory (or directory magit--default-directory))
          (directory (when directory (file-truename directory))))
     (with-current-buffer buffer
@@ -68,19 +68,15 @@
   (interactive)
   (helm-selector
    "Magit"
-   ;; We bind the result of `magit-repository-local-repository' to reflect the
-   ;; current buffer, not each tested buffer.
-   :predicate (let ((repo (magit-repository-local-repository)))
-                (lambda (buffer)
-                  (helm-selector-magit--buffer-p buffer repo)))
+   :predicate (apply-partially #'helm-selector-magit--buffer-p
+                               (magit-repository-local-repository))
    :helm-sources (lambda ()
                    (helm
                     :sources (append
                               (mapcar (lambda (repo)
                                         (helm-selector--default-source
                                          (file-name-base (directory-file-name repo))
-                                         :predicate (lambda (buffer)
-                                                      (helm-selector-magit--buffer-p buffer repo))))
+                                         :predicate (apply-partially #'helm-selector-magit--buffer-p repo)))
                                       (let ((repo (file-truename (magit-repository-local-repository))))
                                         (if repo
                                             (cons repo
