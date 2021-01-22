@@ -100,13 +100,21 @@ See `helm-source-buffer-not-found'."
                                    (current-buffer))))
                  (switch-to-buffer new-buffer))))))))
 
+(defun helm-selector--filter-buffers (predicate)
+  "Return list of buffer names accepted by PREDICATE.
+If current buffer would come first, it's listed last."
+  (let ((filtered-buffers (cl-remove-if-not predicate (buffer-list))))
+    (mapcar #'buffer-name
+            (if (eq (cl-first filtered-buffers) (current-buffer))
+                (append (cl-rest filtered-buffers) (list (current-buffer)))
+              filtered-buffers))))
+
 (cl-defun helm-selector--default-source (name
                                          &key
                                          predicate)
   (helm-make-source (format "%s buffers" name) 'helm-source-buffers
     :buffer-list (lambda ()
-                   (mapcar #'buffer-name
-                           (cl-remove-if-not predicate (buffer-list))))))
+                   (helm-selector--filter-buffers predicate))))
 
 (cl-defun helm-selector--default-sources (name
                                           &key
