@@ -100,23 +100,40 @@ See `helm-source-buffer-not-found'."
                                    (current-buffer))))
                  (switch-to-buffer new-buffer))))))))
 
+(cl-defun helm-selector--default-source (name
+                                         &key
+                                         predicate)
+  (helm-make-source (format "%s buffers" name) 'helm-source-buffers
+    :buffer-list (lambda ()
+                   (mapcar #'buffer-name
+                           (cl-remove-if-not predicate (buffer-list))))))
+
 (cl-defun helm-selector--default-sources (name
                                           &key
                                           predicate
                                           make-buffer-fn
                                           extra-sources)
+  (list (helm-selector--default-source name :predicate predicate)
+        (let ((mode (intern (format "%s-mode" (downcase name)))))
+          (unless (fboundp mode)
+            ;; For cased mode names like `Info-mode'.
+            (setq mode (intern (format "%s-mode" name))))
+          (when (fboundp mode)
+            (helm-selector--dummy-source mode make-buffer-fn)))
+        extra-sources))
+
+(cl-defun helm-selector--default-helm (name
+                                       &key
+                                       predicate
+                                       make-buffer-fn
+                                       extra-sources)
+
   (helm
-   :sources (list (helm-make-source (format "%s buffers" name) 'helm-source-buffers
-                    :buffer-list (lambda ()
-                                   (mapcar #'buffer-name
-                                           (cl-remove-if-not predicate (buffer-list)))))
-                  (let ((mode (intern (format "%s-mode" (downcase name)))))
-                    (unless (fboundp mode)
-                      ;; For cased mode names like `Info-mode'.
-                      (setq mode (intern (format "%s-mode" name))))
-                    (when (fboundp mode)
-                      (helm-selector--dummy-source mode make-buffer-fn)))
-                  extra-sources)
+   :sources (helm-selector--default-sources
+             name
+             :predicate predicate
+             :make-buffer-fn make-buffer-fn
+             :extra-sources extra-sources)
    :buffer (format "*helm-%s-buffers*" name)))
 
 ;;;###autoload
@@ -151,10 +168,10 @@ USE-FOLLOW-P enables follow-mode for the default Helm lister."
     (if (funcall predicate (current-buffer))
         (if helm-sources
             (funcall helm-sources)
-          (helm-selector--default-sources name
-                                          :predicate predicate
-                                          :make-buffer-fn make-buffer-fn
-                                          :extra-sources extra-sources))
+          (helm-selector--default-helm name
+                                       :predicate predicate
+                                       :make-buffer-fn make-buffer-fn
+                                       :extra-sources extra-sources))
       (let ((last-buffer (cl-find-if predicate (buffer-list))))
         (cond
          ((and last-buffer (get-buffer-window last-buffer))
