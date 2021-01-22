@@ -38,6 +38,7 @@
 (declare-function magit-repository-local-repository "magit-mode")
 (declare-function magit-repos-alist "magit-repos")
 (declare-function magit-status-setup-buffer "magit-status")
+(declare-function magit-status "magit-status")
 (defvar magit--default-directory)
 
 (defun helm-selector-magit--buffer-repo-list ()
