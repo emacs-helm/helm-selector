@@ -41,6 +41,7 @@
 (declare-function helm-sly-mini "helm-sly")
 (defvar sly-lisp-implementations)
 (defvar sly-buffer-connection)
+(defvar sly-net-processes)
 
 ;;;###autoload
 (defun helm-selector-sly ()
@@ -58,10 +59,14 @@
                          (sly-process sly-buffer-connection)))))
    :make-buffer-fn (lambda ()
                      (interactive)
-                     (if (< 1 (length sly-lisp-implementations))
+                     ;; TODO: Handle dead processes?
+                     (if (and (null sly-net-processes)
+                              (< 1 (length sly-lisp-implementations)))
                          (let ((current-prefix-arg '-))
                            (call-interactively #'sly))
-                       (sly)))
+                       ;; Make sure to call interactively so that last
+                       ;; connection is reused.
+                       (call-interactively #'sly)))
    :helm-sources #'helm-sly-mini))
 
 ;;;###autoload
